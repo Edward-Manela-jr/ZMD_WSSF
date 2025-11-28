@@ -8,6 +8,34 @@ export default function DataEntryPage() {
     provinceeName: "",
     userName: "",
     stationImage: null,
+    instruments: {
+      barometer: false,
+      standardRaingauge: false,
+      windVane: false,
+      cupCounterAnemometer: false,
+      sunshineRecorder: false,
+      evaporationPan: false,
+      thermometerMax: false,
+      thermometerMin: false,
+      thermometerWetBulb: false,
+      thermometerDryBulb: false,
+      automaticRaingauge: false,
+      groundMinimumThermometer: false,
+      soilThermometer: false,
+      earthThermometer: false,
+    },
+    functionalInstruments: "",
+    nonFunctionalInstruments: "",
+    availableForms: {
+      moz401: false,
+      moz302: false,
+      moz304a: false,
+      moz307a: false,
+      moz307b: false,
+      moz300: false,
+    },
+    stevensonScreenImages: null,
+    synopsMetars: "",
     notes: "",
   });
 
@@ -16,7 +44,31 @@ export default function DataEntryPage() {
     const { name, value, type, files } = e.target;
     setFormData({
       ...formData,
-      [name]: type === "file" ? files[0] : value,
+      [name]: type === "file" ? files : value,
+    });
+  };
+
+  // Handle checkbox changes for instruments
+  const handleInstrumentChange = (e) => {
+    const { name, checked } = e.target;
+    setFormData({
+      ...formData,
+      instruments: {
+        ...formData.instruments,
+        [name]: checked,
+      },
+    });
+  };
+
+  // Handle checkbox changes for available forms
+  const handleFormsChange = (e) => {
+    const { name, checked } = e.target;
+    setFormData({
+      ...formData,
+      availableForms: {
+        ...formData.availableForms,
+        [name]: checked,
+      },
     });
   };
 
@@ -90,6 +142,300 @@ export default function DataEntryPage() {
           required
         />
 
+        {/* Instrument Checklist */}
+        <label style={styles.label}>Instrument Checklist Tick if available *</label>
+        <div style={styles.checklistContainer}>
+          <div style={styles.checkboxItem}>
+            <input
+              type="checkbox"
+              name="barometer"
+              checked={formData.instruments.barometer}
+              onChange={handleInstrumentChange}
+              id="barometer"
+            />
+            <label htmlFor="barometer" style={styles.checkboxLabel}>Barometer</label>
+          </div>
+
+          <div style={styles.checkboxItem}>
+            <input
+              type="checkbox"
+              name="standardRaingauge"
+              checked={formData.instruments.standardRaingauge}
+              onChange={handleInstrumentChange}
+              id="standardRaingauge"
+            />
+            <label htmlFor="standardRaingauge" style={styles.checkboxLabel}>Standard Raingauge</label>
+          </div>
+
+          <div style={styles.checkboxItem}>
+            <input
+              type="checkbox"
+              name="windVane"
+              checked={formData.instruments.windVane}
+              onChange={handleInstrumentChange}
+              id="windVane"
+            />
+            <label htmlFor="windVane" style={styles.checkboxLabel}>Wind Vane</label>
+          </div>
+
+          <div style={styles.checkboxItem}>
+            <input
+              type="checkbox"
+              name="cupCounterAnemometer"
+              checked={formData.instruments.cupCounterAnemometer}
+              onChange={handleInstrumentChange}
+              id="cupCounterAnemometer"
+            />
+            <label htmlFor="cupCounterAnemometer" style={styles.checkboxLabel}>Cup Counter Anemometer</label>
+          </div>
+
+          <div style={styles.checkboxItem}>
+            <input
+              type="checkbox"
+              name="sunshineRecorder"
+              checked={formData.instruments.sunshineRecorder}
+              onChange={handleInstrumentChange}
+              id="sunshineRecorder"
+            />
+            <label htmlFor="sunshineRecorder" style={styles.checkboxLabel}>Sun shine Recorder</label>
+          </div>
+
+          <div style={styles.checkboxItem}>
+            <input
+              type="checkbox"
+              name="evaporationPan"
+              checked={formData.instruments.evaporationPan}
+              onChange={handleInstrumentChange}
+              id="evaporationPan"
+            />
+            <label htmlFor="evaporationPan" style={styles.checkboxLabel}>Evaporation pan</label>
+          </div>
+
+          <div style={styles.checkboxItem}>
+            <input
+              type="checkbox"
+              name="thermometerMax"
+              checked={formData.instruments.thermometerMax}
+              onChange={handleInstrumentChange}
+              id="thermometerMax"
+            />
+            <label htmlFor="thermometerMax" style={styles.checkboxLabel}>Thermometer MAX</label>
+          </div>
+
+          <div style={styles.checkboxItem}>
+            <input
+              type="checkbox"
+              name="thermometerMin"
+              checked={formData.instruments.thermometerMin}
+              onChange={handleInstrumentChange}
+              id="thermometerMin"
+            />
+            <label htmlFor="thermometerMin" style={styles.checkboxLabel}>Thermometer MIN</label>
+          </div>
+
+          <div style={styles.checkboxItem}>
+            <input
+              type="checkbox"
+              name="thermometerWetBulb"
+              checked={formData.instruments.thermometerWetBulb}
+              onChange={handleInstrumentChange}
+              id="thermometerWetBulb"
+            />
+            <label htmlFor="thermometerWetBulb" style={styles.checkboxLabel}>Thermometer Wet Bulb</label>
+          </div>
+
+          <div style={styles.checkboxItem}>
+            <input
+              type="checkbox"
+              name="thermometerDryBulb"
+              checked={formData.instruments.thermometerDryBulb}
+              onChange={handleInstrumentChange}
+              id="thermometerDryBulb"
+            />
+            <label htmlFor="thermometerDryBulb" style={styles.checkboxLabel}>Thermometer Dry Bulb</label>
+          </div>
+
+          <div style={styles.checkboxItem}>
+            <input
+              type="checkbox"
+              name="automaticRaingauge"
+              checked={formData.instruments.automaticRaingauge}
+              onChange={handleInstrumentChange}
+              id="automaticRaingauge"
+            />
+            <label htmlFor="automaticRaingauge" style={styles.checkboxLabel}>Automatic Rain gauge</label>
+          </div>
+
+          <div style={styles.checkboxItem}>
+            <input
+              type="checkbox"
+              name="groundMinimumThermometer"
+              checked={formData.instruments.groundMinimumThermometer}
+              onChange={handleInstrumentChange}
+              id="groundMinimumThermometer"
+            />
+            <label htmlFor="groundMinimumThermometer" style={styles.checkboxLabel}>Ground Minimum Thermometer</label>
+          </div>
+
+          <div style={styles.checkboxItem}>
+            <input
+              type="checkbox"
+              name="soilThermometer"
+              checked={formData.instruments.soilThermometer}
+              onChange={handleInstrumentChange}
+              id="soilThermometer"
+            />
+            <label htmlFor="soilThermometer" style={styles.checkboxLabel}>Soil Thermometer</label>
+          </div>
+
+          <div style={styles.checkboxItem}>
+            <input
+              type="checkbox"
+              name="earthThermometer"
+              checked={formData.instruments.earthThermometer}
+              onChange={handleInstrumentChange}
+              id="earthThermometer"
+            />
+            <label htmlFor="earthThermometer" style={styles.checkboxLabel}>Earth Thermometer</label>
+          </div>
+        </div>
+
+        {/* Functional Instruments input */}
+        <label style={styles.label}>Please Provide instrument number's and names of Fully Functional Instruments at this station with commas in between to separate. *</label>
+        <p style={styles.fileInfo}>E.g Q-Parten Barometer 12345, Maximum Thermometer 4321,</p>
+        <textarea
+          name="functionalInstruments"
+          placeholder="Enter fully functional instruments"
+          value={formData.functionalInstruments}
+          onChange={handleChange}
+          style={styles.textarea}
+          required
+        />
+
+        {/* Non-Functional Instruments input */}
+        <label style={styles.label}>Please Provide the names of Non Functional Instruments at this station with commas in between to separate. *</label>
+        <textarea
+          name="nonFunctionalInstruments"
+          placeholder="Enter non-functional instruments"
+          value={formData.nonFunctionalInstruments}
+          onChange={handleChange}
+          style={styles.textarea}
+          required
+        />
+
+        {/* Available Forms Checklist */}
+        <label style={styles.label}>Please provide Details of Forms Available at your Station Tick if available</label>
+        <div style={styles.checklistContainer}>
+          <div style={styles.checkboxItem}>
+            <input
+              type="checkbox"
+              name="moz401"
+              checked={formData.availableForms.moz401}
+              onChange={handleFormsChange}
+              id="moz401"
+            />
+            <label htmlFor="moz401" style={styles.checkboxLabel}>MOZ401</label>
+          </div>
+
+          <div style={styles.checkboxItem}>
+            <input
+              type="checkbox"
+              name="moz302"
+              checked={formData.availableForms.moz302}
+              onChange={handleFormsChange}
+              id="moz302"
+            />
+            <label htmlFor="moz302" style={styles.checkboxLabel}>MOZ302</label>
+          </div>
+
+          <div style={styles.checkboxItem}>
+            <input
+              type="checkbox"
+              name="moz304a"
+              checked={formData.availableForms.moz304a}
+              onChange={handleFormsChange}
+              id="moz304a"
+            />
+            <label htmlFor="moz304a" style={styles.checkboxLabel}>MOZ304A</label>
+          </div>
+
+          <div style={styles.checkboxItem}>
+            <input
+              type="checkbox"
+              name="moz307a"
+              checked={formData.availableForms.moz307a}
+              onChange={handleFormsChange}
+              id="moz307a"
+            />
+            <label htmlFor="moz307a" style={styles.checkboxLabel}>MOZ307A</label>
+          </div>
+
+          <div style={styles.checkboxItem}>
+            <input
+              type="checkbox"
+              name="moz307b"
+              checked={formData.availableForms.moz307b}
+              onChange={handleFormsChange}
+              id="moz307b"
+            />
+            <label htmlFor="moz307b" style={styles.checkboxLabel}>MOZ307B</label>
+          </div>
+
+          <div style={styles.checkboxItem}>
+            <input
+              type="checkbox"
+              name="moz300"
+              checked={formData.availableForms.moz300}
+              onChange={handleFormsChange}
+              id="moz300"
+            />
+            <label htmlFor="moz300" style={styles.checkboxLabel}>MOZ300</label>
+          </div>
+        </div>
+
+        {/* Stevenson Screen Images upload */}
+        <label style={styles.label}>Picture of the Stevenson Screen Outside and Inside *</label>
+        <p style={styles.fileInfo}>Upload up to 5 supported files: image. Max 10 MB per file.</p>
+        <input
+          type="file"
+          name="stevensonScreenImages"
+          accept="image/*"
+          onChange={handleChange}
+          style={styles.input}
+          multiple
+          required
+        />
+
+        {/* SYNOPS and METARS selection */}
+        <label style={styles.label}>Do you collect SYNOPS and METARS or both? *</label>
+        <div style={styles.radioContainer}>
+          <div style={styles.radioItem}>
+            <input
+              type="radio"
+              name="synopsMetars"
+              value="synopsOnly"
+              checked={formData.synopsMetars === "synopsOnly"}
+              onChange={handleChange}
+              id="synopsOnly"
+              required
+            />
+            <label htmlFor="synopsOnly" style={styles.radioLabel}>SYNOPS Only</label>
+          </div>
+
+          <div style={styles.radioItem}>
+            <input
+              type="radio"
+              name="synopsMetars"
+              value="synopsAndMetars"
+              checked={formData.synopsMetars === "synopsAndMetars"}
+              onChange={handleChange}
+              id="synopsAndMetars"
+              required
+            />
+            <label htmlFor="synopsAndMetars" style={styles.radioLabel}>SYNOPS and METARS</label>
+          </div>
+        </div>
+
         {/* Submit button */}
         <button style={styles.button}>Save</button>
       </form>
@@ -137,10 +483,47 @@ const styles = {
     padding: "10px",
     fontSize: "1rem",
   },
+  checklistContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "8px",
+    marginTop: "10px",
+    padding: "10px",
+    border: "1px solid #ddd",
+    borderRadius: "4px",
+  },
+  checkboxItem: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+  },
+  checkboxLabel: {
+    fontWeight: "normal",
+    margin: "0",
+  },
+  radioContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "8px",
+    marginTop: "10px",
+    padding: "10px",
+    border: "1px solid #ddd",
+    borderRadius: "4px",
+  },
+  radioItem: {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+  },
+  radioLabel: {
+    fontWeight: "normal",
+    margin: "0",
+  },
   textarea: {
     padding: "10px",
     fontSize: "1rem",
     height: "80px",
+    fontFamily: "Arial",
   },
   button: {
     padding: "10px",
