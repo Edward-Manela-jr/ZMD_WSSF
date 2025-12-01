@@ -1,29 +1,39 @@
 import React, { useState } from "react";
 
 export default function DataEntryPage() {
-  // State to manage form input values
+  // List of all instruments
+  const instrumentList = [
+    "barometer",
+    "standardRaingauge",
+    "windVane",
+    "cupCounterAnemometer",
+    "sunshineRecorder",
+    "evaporationPan",
+    "thermometerMax",
+    "thermometerMin",
+    "thermometerWetBulb",
+    "thermometerDryBulb",
+    "automaticRaingauge",
+    "groundMinimumThermometer",
+    "soilThermometer",
+    "earthThermometer",
+  ];
+
+  // Initialize instrument state based on the list
+  const initialInstrumentState = instrumentList.reduce((acc, inst) => {
+    acc[inst] = { available: false, status: "" };
+    return acc;
+  }, {});
+
+  // Full formData state
   const [formData, setFormData] = useState({
     stationNameNumber: "",
     lastDateVisited: "",
     provinceeName: "",
     userName: "",
     stationImage: null,
-    instruments: {
-      barometer: false,
-      standardRaingauge: false,
-      windVane: false,
-      cupCounterAnemometer: false,
-      sunshineRecorder: false,
-      evaporationPan: false,
-      thermometerMax: false,
-      thermometerMin: false,
-      thermometerWetBulb: false,
-      thermometerDryBulb: false,
-      automaticRaingauge: false,
-      groundMinimumThermometer: false,
-      soilThermometer: false,
-      earthThermometer: false,
-    },
+    manPerStation: "",
+    instruments: initialInstrumentState,
     functionalInstruments: "",
     nonFunctionalInstruments: "",
     availableForms: {
@@ -39,7 +49,7 @@ export default function DataEntryPage() {
     notes: "",
   });
 
-  // Handle input changes and update state
+  // Handle normal field changes
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
     setFormData({
@@ -48,14 +58,34 @@ export default function DataEntryPage() {
     });
   };
 
-  // Handle checkbox changes for instruments
+  // Handle checkbox for "instrument available"
   const handleInstrumentChange = (e) => {
     const { name, checked } = e.target;
     setFormData({
       ...formData,
       instruments: {
         ...formData.instruments,
-        [name]: checked,
+        [name]: {
+          ...formData.instruments[name],
+          available: checked,
+          // If unchecked, clear status
+          status: checked ? formData.instruments[name].status : "",
+        },
+      },
+    });
+  };
+
+  // Handle typing in instrument status field
+  const handleInstrumentStatus = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      instruments: {
+        ...formData.instruments,
+        [name]: {
+          ...formData.instruments[name],
+          status: value,
+        },
       },
     });
   };
@@ -75,7 +105,7 @@ export default function DataEntryPage() {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form Submitted:", formData); 
+    console.log("Form Submitted:", formData);
     alert("Data captured (not sent to DB yet)");
   };
 
@@ -142,165 +172,51 @@ export default function DataEntryPage() {
           required
         />
 
+        {/* Man per Station input */}
+        <label style={styles.label}>Man per Station *</label>
+        <input
+          name="manPerStation"
+          placeholder="Enter number of personnel at station"
+          type="number"
+          value={formData.manPerStation}
+          onChange={handleChange}
+          style={styles.input}
+          required
+        />
+
         {/* Instrument Checklist */}
-        <label style={styles.label}>Instrument Checklist Tick if available *</label>
+        <label style={styles.label}>Instrument Checklist — Tick if available *</label>
         <div style={styles.checklistContainer}>
-          <div style={styles.checkboxItem}>
-            <input
-              type="checkbox"
-              name="barometer"
-              checked={formData.instruments.barometer}
-              onChange={handleInstrumentChange}
-              id="barometer"
-            />
-            <label htmlFor="barometer" style={styles.checkboxLabel}>Barometer</label>
-          </div>
+          {instrumentList.map((inst) => (
+            <div key={inst} style={styles.instrumentRow}>
+              <div style={styles.checkboxItem}>
+                <input
+                  type="checkbox"
+                  name={inst}
+                  checked={formData.instruments[inst].available}
+                  onChange={handleInstrumentChange}
+                />
+                <label style={styles.checkboxLabel}>
+                  {inst.replace(/([A-Z])/g, " $1")}
+                </label>
+              </div>
 
-          <div style={styles.checkboxItem}>
-            <input
-              type="checkbox"
-              name="standardRaingauge"
-              checked={formData.instruments.standardRaingauge}
-              onChange={handleInstrumentChange}
-              id="standardRaingauge"
-            />
-            <label htmlFor="standardRaingauge" style={styles.checkboxLabel}>Standard Raingauge</label>
-          </div>
-
-          <div style={styles.checkboxItem}>
-            <input
-              type="checkbox"
-              name="windVane"
-              checked={formData.instruments.windVane}
-              onChange={handleInstrumentChange}
-              id="windVane"
-            />
-            <label htmlFor="windVane" style={styles.checkboxLabel}>Wind Vane</label>
-          </div>
-
-          <div style={styles.checkboxItem}>
-            <input
-              type="checkbox"
-              name="cupCounterAnemometer"
-              checked={formData.instruments.cupCounterAnemometer}
-              onChange={handleInstrumentChange}
-              id="cupCounterAnemometer"
-            />
-            <label htmlFor="cupCounterAnemometer" style={styles.checkboxLabel}>Cup Counter Anemometer</label>
-          </div>
-
-          <div style={styles.checkboxItem}>
-            <input
-              type="checkbox"
-              name="sunshineRecorder"
-              checked={formData.instruments.sunshineRecorder}
-              onChange={handleInstrumentChange}
-              id="sunshineRecorder"
-            />
-            <label htmlFor="sunshineRecorder" style={styles.checkboxLabel}>Sun shine Recorder</label>
-          </div>
-
-          <div style={styles.checkboxItem}>
-            <input
-              type="checkbox"
-              name="evaporationPan"
-              checked={formData.instruments.evaporationPan}
-              onChange={handleInstrumentChange}
-              id="evaporationPan"
-            />
-            <label htmlFor="evaporationPan" style={styles.checkboxLabel}>Evaporation pan</label>
-          </div>
-
-          <div style={styles.checkboxItem}>
-            <input
-              type="checkbox"
-              name="thermometerMax"
-              checked={formData.instruments.thermometerMax}
-              onChange={handleInstrumentChange}
-              id="thermometerMax"
-            />
-            <label htmlFor="thermometerMax" style={styles.checkboxLabel}>Thermometer MAX</label>
-          </div>
-
-          <div style={styles.checkboxItem}>
-            <input
-              type="checkbox"
-              name="thermometerMin"
-              checked={formData.instruments.thermometerMin}
-              onChange={handleInstrumentChange}
-              id="thermometerMin"
-            />
-            <label htmlFor="thermometerMin" style={styles.checkboxLabel}>Thermometer MIN</label>
-          </div>
-
-          <div style={styles.checkboxItem}>
-            <input
-              type="checkbox"
-              name="thermometerWetBulb"
-              checked={formData.instruments.thermometerWetBulb}
-              onChange={handleInstrumentChange}
-              id="thermometerWetBulb"
-            />
-            <label htmlFor="thermometerWetBulb" style={styles.checkboxLabel}>Thermometer Wet Bulb</label>
-          </div>
-
-          <div style={styles.checkboxItem}>
-            <input
-              type="checkbox"
-              name="thermometerDryBulb"
-              checked={formData.instruments.thermometerDryBulb}
-              onChange={handleInstrumentChange}
-              id="thermometerDryBulb"
-            />
-            <label htmlFor="thermometerDryBulb" style={styles.checkboxLabel}>Thermometer Dry Bulb</label>
-          </div>
-
-          <div style={styles.checkboxItem}>
-            <input
-              type="checkbox"
-              name="automaticRaingauge"
-              checked={formData.instruments.automaticRaingauge}
-              onChange={handleInstrumentChange}
-              id="automaticRaingauge"
-            />
-            <label htmlFor="automaticRaingauge" style={styles.checkboxLabel}>Automatic Rain gauge</label>
-          </div>
-
-          <div style={styles.checkboxItem}>
-            <input
-              type="checkbox"
-              name="groundMinimumThermometer"
-              checked={formData.instruments.groundMinimumThermometer}
-              onChange={handleInstrumentChange}
-              id="groundMinimumThermometer"
-            />
-            <label htmlFor="groundMinimumThermometer" style={styles.checkboxLabel}>Ground Minimum Thermometer</label>
-          </div>
-
-          <div style={styles.checkboxItem}>
-            <input
-              type="checkbox"
-              name="soilThermometer"
-              checked={formData.instruments.soilThermometer}
-              onChange={handleInstrumentChange}
-              id="soilThermometer"
-            />
-            <label htmlFor="soilThermometer" style={styles.checkboxLabel}>Soil Thermometer</label>
-          </div>
-
-          <div style={styles.checkboxItem}>
-            <input
-              type="checkbox"
-              name="earthThermometer"
-              checked={formData.instruments.earthThermometer}
-              onChange={handleInstrumentChange}
-              id="earthThermometer"
-            />
-            <label htmlFor="earthThermometer" style={styles.checkboxLabel}>Earth Thermometer</label>
-          </div>
+              {/* Show status input only if available */}
+              {formData.instruments[inst].available && (
+                <input
+                  type="text"
+                  placeholder="Functional / Non-functional / Notes"
+                  name={inst}
+                  value={formData.instruments[inst].status}
+                  onChange={handleInstrumentStatus}
+                  style={styles.statusInput}
+                />
+              )}
+            </div>
+          ))}
         </div>
 
-        {/* Functional Instruments input */}
+        {/* Functional Instruments input
         <label style={styles.label}>Please Provide instrument number's and names of Fully Functional Instruments at this station with commas in between to separate. *</label>
         <p style={styles.fileInfo}>E.g Q-Parten Barometer 12345, Maximum Thermometer 4321,</p>
         <textarea
@@ -310,9 +226,9 @@ export default function DataEntryPage() {
           onChange={handleChange}
           style={styles.textarea}
           required
-        />
+        /> */}
 
-        {/* Non-Functional Instruments input */}
+        {/* Non-Functional Instruments input
         <label style={styles.label}>Please Provide the names of Non Functional Instruments at this station with commas in between to separate. *</label>
         <textarea
           name="nonFunctionalInstruments"
@@ -321,7 +237,7 @@ export default function DataEntryPage() {
           onChange={handleChange}
           style={styles.textarea}
           required
-        />
+        /> */}
 
         {/* Available Forms Checklist */}
         <label style={styles.label}>Please provide Details of Forms Available at your Station Tick if available</label>
@@ -486,20 +402,32 @@ const styles = {
   checklistContainer: {
     display: "flex",
     flexDirection: "column",
-    gap: "8px",
+    gap: "12px",
     marginTop: "10px",
     padding: "10px",
     border: "1px solid #ddd",
     borderRadius: "4px",
   },
+  instrumentRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+  },
   checkboxItem: {
     display: "flex",
     alignItems: "center",
     gap: "8px",
+    width: "50%",
   },
   checkboxLabel: {
     fontWeight: "normal",
     margin: "0",
+    textTransform: "capitalize",
+  },
+  statusInput: {
+    padding: "5px",
+    flex: 1,
+    fontSize: "0.9rem",
   },
   radioContainer: {
     display: "flex",
