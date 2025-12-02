@@ -115,6 +115,16 @@ export default function DataEntryPage() {
       <h2 style={styles.heading2}>Please complete the form below to report station status</h2>
       <h3 style={styles.heading3}>* Indicates required question</h3>
 
+      <button
+        onClick={() => {
+          localStorage.clear();
+          window.location.reload();
+        }}
+        style={{ marginBottom: 16, padding: "8px 12px", cursor: "pointer" }}
+      >
+        Logout
+      </button>
+
       {/* Form with input fields for data collection */}
       <form style={styles.form} onSubmit={handleSubmit}>
         {/* Station Name and Number input */}
