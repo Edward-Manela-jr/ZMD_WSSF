@@ -35,7 +35,7 @@ export default function LoginPage({ onLogin }) {
 
   return (
     <div style={styles.container}>
-      <h1>ZMD Login</h1>
+      <h1>Welcome, please login</h1>
       <form style={styles.form} onSubmit={handleSubmit}>
         <input
           type="username"
